@@ -1,0 +1,35 @@
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+    <div class="form_container">
+        <form action="{% url "add_interest" course_id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label" style="display: block;">
+                    <h4 style="margin-bottom: 2rem;">Interest Form</h4>
+                </label>
+
+                <label for="interested" class="form-label" style="display: block;">
+                    <h4> Interested </h4>
+                    {{  form.interested }}
+                </label>
+
+                <label for="levels" class="form-label" style="display: block;">
+                    <h4> Levels </h4>
+                    {{  form.levels }}
+                </label>
+
+                <label for="comments" class="form-label" style="display: block;">
+                    <h4> Comments </h4>
+                    {{  form.comments }}
+                </label>
+
+                <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
+
+            </div>
+        </form>
+    </div>
+    <p><a href="{% url 'about' %}">About page</a></p>
+
+    <p><a href="{% url 'courses' %}">All Courses</a></p>
+{% endblock %}

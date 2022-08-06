@@ -1,0 +1,22 @@
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+    <a href="{% url 'courses' %}">Back to all courses</a>
+    <p><b>Course Details:</b></p>
+    <ul>
+        <li>
+            <b>Name: </b>{{ course.name}}
+        </li>
+        <li>
+            <b>Price: </b>{{ course.price }}
+        </li>
+        <li>
+            <b>No of students Interested: </b>{{ course.interested }}
+        </li>
+        <li>
+            <b>For Everyone: </b>{{ course.for_everyone }}
+        </li>
+        <li>
+            <a href="{% url 'add_interest' course.id %}">Add Interest</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+    <p><b>Topic Name:</b> {{ topic.name }}</p>
+    <p><b>Topic Category:</b> {{ topic.category }}</p>
+    <p><b>Courses:</b></p>
+    {% if course_list %}
+        <ol>
+            {% for course in course_list %}
+                <li> {{ course.name}} </li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <strong>There are no available courses!</strong>
+    {% endif %}
+    <p>
+        <a href="{% url 'about' %}">About page</a>
+    </p>
+
+    <p>
+        <a href="{% url 'index' %}">Home page</a>
+    </p>
+{% endblock %}

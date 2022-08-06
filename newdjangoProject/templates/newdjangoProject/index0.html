@@ -1,0 +1,28 @@
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+   {% if top_list %}
+       <h2>List of Topics</h2>
+       <ol>
+            {% for top in top_list %}
+                <li>
+                    <a href="{% url 'detail' top.id %}">{{ top.name}}</a>
+                </li>
+            {% endfor %}
+       </ol>
+   {% else %}
+       <strong>There are no available topics!</strong>
+   {% endif %}
+
+    <p>
+        {% if request.session.last_login %}
+            Last Logged In at : {{ request.session.last_login }}
+            <p><a href="{% url 'user_logout' %}">Logout</a></p>
+        {% else %}
+            Your last login was more than one hour ago
+            <p><a href="{% url 'user_login' %}">Login</a></p>
+        {% endif %}
+    </p>
+    <p><a href="{% url 'about' %}">About page</a></p>
+
+    <p><a href="{% url 'courses' %}">All Courses</a></p>
+{% endblock %}
