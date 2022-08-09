@@ -2,13 +2,13 @@ import decimal
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum
 from django.utils import timezone
-from decimal import Decimal
+from newdjangoProject.validators import validate_price
 
 DISCOUNT_PERCENT = 10
 
 # Create your models here.
+
 
 class Topic(models.Model):
     name = models.CharField(max_length=200)
@@ -22,9 +22,11 @@ class Topic(models.Model):
 
 
 class Course(models.Model):
-    topic = models.ForeignKey(Topic, related_name='courses', on_delete=models.CASCADE)
+    topic = models.ForeignKey(
+        Topic, related_name='courses', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, validators=[validate_price])
     for_everyone = models.BooleanField(default=True)
     description = models.TextField(max_length=300, null=True, blank=True)
     interested = models.PositiveIntegerField(default=0)
@@ -35,7 +37,8 @@ class Course(models.Model):
             self.for_everyone)
 
     def discount(self):
-        discount = str(round(self.price-(self.price * decimal.Decimal(DISCOUNT_PERCENT/100)),2))
+        discount = str(
+            round(self.price-(self.price * decimal.Decimal(DISCOUNT_PERCENT/100)), 2))
         return discount
 
 
@@ -58,7 +61,6 @@ class Student(User):
 
     def interested_in_topics(self):
         return list(self.interested_in.values_list("name", flat=True))
-
 
 
 class Order(models.Model):
@@ -85,5 +87,6 @@ class Interest(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=20, default="", null=True)
     orders = models.ManyToManyField(Order)
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING, null=True)
+    student = models.ForeignKey(
+        Student, on_delete=models.DO_NOTHING, null=True)
     topic = models.OneToOneField(Topic, on_delete=models.CASCADE, null=True)

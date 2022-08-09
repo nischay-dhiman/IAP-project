@@ -5,25 +5,27 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.signals import user_logged_out
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.shortcuts import render, get_object_or_404, reverse
 
 from .forms import InterestForm, OrderForm, LoginForm, RegisterForm
-from .models import Topic, Course, Interest
+from .models import Topic, Course, Interest, Order
 
 
 def do_stuff(user, request, **kwargs):
     request.delete_cookie('last_login')
 
 
-user_logged_out.connect(do_stuff)
-
+# user_logged_out.connect(do_stuff)
 
 def index(request):
+    user = request.user
+    first_name = "User"
+    if user.is_authenticated:
+        first_name = user.first_name
     top_list = Topic.objects.all().order_by('id')[:10]
-    return render(request, 'newdjangoProject/index0.html', {'top_list': top_list})
+    return render(request, 'newdjangoProject/index0.html', {'top_list': top_list, 'first_name': first_name})
 
 
 def user_login(request):
@@ -34,7 +36,10 @@ def user_login(request):
         if user:
             if user.is_active:
                 request.session['last_login'] = str(datetime.now())
+                nextUrl = request.POST.get("next")
                 response = HttpResponseRedirect(reverse('index'))
+                if nextUrl:
+                    response = HttpResponseRedirect(nextUrl)
                 # response.set_cookie('last_login', datetime.now() , max_age=3600)
                 login(request, user)
                 return response
@@ -70,7 +75,7 @@ def user_logout(request):
     return response
 
 
-@login_required
+@login_required(login_url='/myapp/login/')
 def myaccount(request):
     user = get_user(request)
     if hasattr(user, 'student'):
@@ -91,7 +96,8 @@ def about(request):
     # return HttpResponse('This is an E-learning Website! Search our Topics to find all available Courses')
     response = render(request, 'newdjangoProject/about0.html')
     if request.COOKIES.get('about_visits'):
-        response.set_cookie('about_visits', int(request.COOKIES['about_visits']) + 1, max_age=300)
+        response.set_cookie('about_visits', int(
+            request.COOKIES['about_visits']) + 1, max_age=300)
     else:
         response.set_cookie('about_visits', 1, max_age=300)
 
@@ -156,5 +162,20 @@ def add_interest(request, course_no):
             context = {'form': InterestForm()}
             return render(request, 'newdjangoProject/interest.html', context)
     else:
-        context = {'form': InterestForm(), 'course_id': get_object_or_404(Course, id=course_no).id}
+        context = {'form': InterestForm(), 'course_id': get_object_or_404(
+            Course, id=course_no).id}
         return render(request, 'newdjangoProject/interest.html', context)
+
+
+@login_required
+def myorders(request):
+    user = get_user(request)
+    if hasattr(user, 'student'):
+        order_list = Order.objects.filter(student=user.student)
+        context = {
+            'orders': order_list
+        }
+        return render(request, 'newdjangoProject/myorders.html', context)
+    else:
+        msg = "You are not a registered student!"
+        return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})

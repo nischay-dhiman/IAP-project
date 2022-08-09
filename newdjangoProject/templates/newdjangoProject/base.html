@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
- <head>
- <link rel="stylesheet" type="text/css" href="{% static 'newdjangoProject/style.css' %}"
-/>
- <title>E-Learning WebApp - {% block title %}Welcome!{% endblock %}</title>
- </head>
- <body>
- <div>
- <h1>{% block myhdg %}Hello User {% endblock %}</h1>
- {% block body_block %}*** {% endblock %}
- </div>
- <hr />
- <div>
- <ul>
- <li class="hbar1"><a href="/myapp/about/">Find out about our ELearning site</a></li>
- <li class="hbar1"><a href = "{% url 'index' %}">Click here to return to main page</a><br/></li>
- </ul>
- </div>
- </body>
+  <head>
+    <link
+      rel="stylesheet"
+      href="{% static 'newdjangoProject/css/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'newdjangoProject/css/bootstrap.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'newdjangoProject/style.css' %}"
+    />
+    <title>E-Learning WebApp - {% block title %}Welcome!{% endblock %}</title>
+  </head>
+  <body>
+    <div class="container-xl">
+      <h1>{% block myhdg %}Hello User {% endblock %}</h1>
+      <div class="bodyContainer">{% block body_block %}*** {% endblock %}</div>
+    </div>
+    <hr />
+    <div>
+      <ul>
+        <li class="hbar1">
+          <a href="/myapp/about/">Find out about our ELearning site</a>
+        </li>
+        <li class="hbar1">
+          <a href="{% url 'index' %}">Click here to return to main page</a
+          ><br />
+        </li>
+      </ul>
+    </div>
+  </body>
 </html>
