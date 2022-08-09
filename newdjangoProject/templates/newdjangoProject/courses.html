@@ -1,18 +1,16 @@
-{% extends 'newdjangoProject/base.html' %}
-{% block body_block %}
-    <a href="{% url 'placeorder' %}">New Order</a>
-    <p><b>Courses:</b></p>
+{% extends 'newdjangoProject/base.html' %} {% block body_block %}
+<a href="{% url 'placeorder' %}">New Order</a>
 
+<p><b>Courses:</b></p>
 
-    {% if course_list %}
-        <ol>
-            {% for course in course_list %}
-                <li>
-                    <a href="{% url 'coursedetail' course.id %}">{{ course.name}}</a>
-                </li>
-            {% endfor %}
-        </ol>
-    {% else %}
-        <strong>There are no available courses!</strong>
-    {% endif %}
-{% endblock %}
+{% if course_list %}
+<ol>
+  {% for course in course_list %}
+  <li>
+    <a href="{% url 'coursedetail' course.id %}">{{ course.name}}</a>
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<strong>There are no available courses!</strong>
+{% endif %} {% endblock %}

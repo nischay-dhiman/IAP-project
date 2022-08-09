@@ -1,24 +1,31 @@
 # Create your views here.
 # Import necessary classes
-from datetime import datetime
-
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.signals import user_logged_out
-from django.db.models import F
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, reverse, redirect
-
-from .forms import InterestForm, OrderForm, LoginForm, RegisterForm
+from django.contrib.auth import authenticate, login, get_user, logout
+from .forms import InterestForm, OrderForm, LoginForm
+from .models import Topic, Course, Order, Interest
+from django.shortcuts import render, get_object_or_404, reverse
 from .models import Topic, Course, Interest
+from .forms import InterestForm, OrderForm, LoginForm, RegisterForm
+from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import F
+from django.contrib.auth.signals import user_logged_out
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, get_user
+from django.contrib import messages
+from datetime import datetime
+<< << << < Updated upstream
+
+
+== == == =
+>>>>>> > Stashed changes
 
 
 def do_stuff(user, request, **kwargs):
     request.delete_cookie('last_login')
 
 
-user_logged_out.connect(do_stuff)
+# user_logged_out.connect(do_stuff)
 
 
 def index(request):
@@ -31,10 +38,15 @@ def user_login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+
         if user:
             if user.is_active:
                 request.session['last_login'] = str(datetime.now())
+                nextUrl = request.POST.get("next")
+                print(1, nextUrl)
                 response = HttpResponseRedirect(reverse('index'))
+                if nextUrl:
+                    response = HttpResponseRedirect(nextUrl)
                 # response.set_cookie('last_login', datetime.now() , max_age=3600)
                 login(request, user)
                 return response
@@ -43,8 +55,11 @@ def user_login(request):
         else:
             return HttpResponse('Invalid login details.')
     else:
-        context = {'form': LoginForm()}
-        return render(request, 'newdjangoProject/login.html', context)
+
+
+<< << << < Updated upstream
+context = {'form': LoginForm()}
+return render(request, 'newdjangoProject/login.html', context)
 
 
 def register(request):
@@ -66,11 +81,40 @@ def user_logout(request):
     # logout(request)  # COMMENTING FOR PART 2C
     del request.session['last_login']
     response = HttpResponseRedirect(reverse('newdjangoProject:index'))
-    # response.delete_cookie('last_login')
-    return response
+
+
+== == == =
+nextUrl = request.GET.get("next")
+context = {
+    'form': LoginForm(),
+    'next': nextUrl
+}
+return render(request, 'newdjangoProject/login.html', context)
 
 
 @login_required
+def user_logout(request):
+    logout(request)
+    # del request.session['last_login']
+    response = HttpResponseRedirect(reverse('index'))
+
+
+>>>>>> > Stashed changes
+# response.delete_cookie('last_login')
+return response
+
+
+<< << << < Updated upstream
+
+
+@login_required
+== == == =
+
+
+@login_required(login_url='/myapp/login/')
+>>>>>> > Stashed changes
+
+
 def myaccount(request):
     user = get_user(request)
     if hasattr(user, 'student'):
@@ -87,11 +131,29 @@ def myaccount(request):
         return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
 
 
+<< << << < Updated upstream
+== == == =
+# Create your views here.
+
+
+def index(request):
+    user = request.user
+    first_name = "User"
+    if user.is_authenticated:
+        first_name = user.first_name
+    top_list = Topic.objects.all().order_by('id')[:10]
+    return render(request, 'newdjangoProject/index0.html', {'top_list': top_list, 'first_name': first_name})
+
+
+>>>>>> > Stashed changes
+
+
 def about(request):
     # return HttpResponse('This is an E-learning Website! Search our Topics to find all available Courses')
     response = render(request, 'newdjangoProject/about0.html')
     if request.COOKIES.get('about_visits'):
-        response.set_cookie('about_visits', int(request.COOKIES['about_visits']) + 1, max_age=300)
+        response.set_cookie('about_visits', int(
+            request.COOKIES['about_visits']) + 1, max_age=300)
     else:
         response.set_cookie('about_visits', 1, max_age=300)
 
@@ -156,5 +218,27 @@ def add_interest(request, course_no):
             context = {'form': InterestForm()}
             return render(request, 'newdjangoProject/interest.html', context)
     else:
-        context = {'form': InterestForm(), 'course_id': get_object_or_404(Course, id=course_no).id}
+        context = {'form': InterestForm(), 'course_id': get_object_or_404(
+            Course, id=course_no).id}
         return render(request, 'newdjangoProject/interest.html', context)
+
+
+<< << << < Updated upstream
+== == == =
+
+
+@login_required
+def myorders(request):
+    user = get_user(request)
+    if hasattr(user, 'student'):
+        order_list = Order.objects.filter(student=user.student)
+        context = {
+            'orders': order_list
+        }
+        return render(request, 'newdjangoProject/myorders.html', context)
+    else:
+        msg = "You are not a registered student!"
+        return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
+
+
+>>>>>> > Stashed changes
