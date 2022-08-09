@@ -2,10 +2,10 @@
 {% block body_block %}
 
     <div class="form_container">
-        <form action="{% url "user_login" %}" method="post" enctype="multipart/form-data">
+        <br action="{% url "user_login" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h2>{{ msg }}</h2>
-            <div class="mb-3">
+            <br class="mb-3">
                 <label for="formFile" class="form-label" style="display: block;">
                     <h4 style="margin-bottom: 2rem;">Login Form</h4>
                 </label>
@@ -19,14 +19,12 @@
                     <h4> Password </h4>
                     {{  form.password }}
                 </label>
+            <br>
 
                 <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
-
-            </div>
+        </div>
         </form>
     </div>
-
-
 
      <p><a href="{% url 'about' %}">About page</a></p>
 

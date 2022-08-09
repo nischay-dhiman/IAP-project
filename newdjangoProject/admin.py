@@ -1,10 +1,34 @@
-from django.contrib import admin
+import decimal
 
+from django.contrib import admin
 from django.contrib import admin
 from django.db import models
+from django.db.models import F
+
 from .models import Topic, Course, Student, Order
 
-admin.site.register(Topic)
-admin.site.register(Course)
+
+class CourseInline(admin.TabularInline):
+    model = Course
+
+
+class TopicAdmin(admin.ModelAdmin):
+    inlines = [CourseInline]
+
+
+class CourseAdmin(admin.ModelAdmin):
+    actions = ['apply_discount']
+
+    def apply_discount(self, request, queryset):
+        queryset.update(price=F('price') * decimal.Decimal('0.9'))
+
+    apply_discount.short_description = 'Apply 10%% discount'
+
+
+# Register your models here.
+admin.site.register(Topic, TopicAdmin)
+admin.site.register(Course, CourseAdmin)
+# admin.site.register(Topic)
+# admin.site.register(Course)
 admin.site.register(Student)
 admin.site.register(Order)

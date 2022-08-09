@@ -1,7 +1,10 @@
 from django import forms
-from newdjangoProject.models import Order, Course, Topic, Student
-import datetime
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.forms import ModelForm, RadioSelect, SelectDateWidget
+
+from newdjangoProject.models import Order, Student
+
 
 class InterestForm(forms.Form):
     choice = [('1', 'Yes'), ('0', 'No')]
@@ -19,6 +22,22 @@ class OrderForm(ModelForm):
             'order_date': SelectDateWidget()
         }
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = Student
+        fields = ("username", "first_name", "last_name", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
+        if commit:
+            user.save()
+        return user
+
+
+
