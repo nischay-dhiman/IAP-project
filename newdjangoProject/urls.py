@@ -28,6 +28,7 @@ urlpatterns = [
     path(r'placeorder', views.placeorder, name='placeorder'),
     path(r'login/', views.user_login, name='user_login'),
     path(r'logout/', views.user_logout, name='user_logout'),
-    path(r'myaccount/', views.myaccount, name='myaccount')
+    path(r'myaccount/', views.myaccount, name='myaccount'),
+    path(r'register/', views.register, name='register')
 ]
 
