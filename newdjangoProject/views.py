@@ -9,13 +9,14 @@ from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, reverse
 
-from .forms import InterestForm, OrderForm, LoginForm, RegisterForm, ResetPasswordForm, StudentForm
-from .models import Topic, Course, Interest, Order
+from newdjangoProject.forms import InterestForm, OrderForm, LoginForm, RegisterForm, ResetPasswordForm, StudentForm
+from newdjangoProject.models import Topic, Course, Interest, Order
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 
 import random
 import string
+
 
 def do_stuff(user, request, **kwargs):
     request.delete_cookie('last_login')
@@ -52,7 +53,7 @@ def user_login(request):
         else:
             return HttpResponse('Invalid login details.')
     else:
-        context = {'form': LoginForm()}
+        context = {'form': LoginForm(), 'next': request.GET.get("next")}
         return render(request, 'newdjangoProject/login.html', context)
 
 
@@ -79,10 +80,12 @@ def user_logout(request):
     response = HttpResponseRedirect(reverse('index'))
     return response
 
+
 def forgot_password(request):
     # fetch email and check if user exists and send email for new password
     context = {'form': ResetPasswordForm()}
     return render(request, 'newdjangoProject/forgot_password.html', context)
+
 
 def send_new_password(request):
     username = request.POST['username']
@@ -107,7 +110,6 @@ def send_new_password(request):
 
     context = {'form': LoginForm(), 'msg': "New password sent successfully"}
     return render(request, 'newdjangoProject/login.html', context)
-
 
 
 @login_required(login_url='/myapp/login/')
@@ -149,10 +151,11 @@ def placeorder(request):
     msg = ''
     courlist = Course.objects.all()
 
-    def new_order_form(msg = None):
+    def new_order_form(msg=None):
         current_user = get_user(request)
         if current_user.id:
-            form = OrderForm(request.POST or None, initial={'student': current_user.student, })
+            form = OrderForm(request.POST or None, initial={
+                             'student': current_user.student, })
             logged_in = True
         else:
             form = OrderForm()
@@ -232,6 +235,7 @@ def myorders(request):
         msg = "You are not a registered student!"
         return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
 
+
 @login_required
 def edit_profile(request):
     user = get_user(request)
@@ -247,7 +251,8 @@ def edit_profile(request):
             else:
                 msg = form.errors
 
-        context = {'msg': msg, 'form': StudentForm(), 'user': user, 'image_url': user.student.avatar_url}
+        context = {'msg': msg, 'form': StudentForm(), 'user': user,
+                   'image_url': user.student.avatar_url}
         return render(request, 'newdjangoProject/edit_profile.html', context)
 
     else:
