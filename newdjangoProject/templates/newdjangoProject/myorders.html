@@ -1,16 +1,32 @@
-{% extends 'newdjangoProject/base.html' %} {% block body_block %}
-<a href="{% url 'placeorder' %}">New Order</a>
-<p><b>Orders:</b></p>
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+    <a href="{% url 'placeorder' %}">New Order</a>
+    <h2>My Orders</h2>
+        {% if orders %}
+            <table>
+                <thead>
+                    <th>
+                        Order Course
+                    </th>
+                    <th>
+                        Levels
+                    </th>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>
+                                {{ order.course.name}}
+                            </td>
+                            <td>
+                                {{ order.levels}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>There are no orders!</p>
+        {% endif %}
 
-{% if orders %}
-<ol>
-  {% for order in orders %}
-  <li>
-    {{ order.course.name}} {% comment %}
-    <a href="{% url 'coursedetail' order.id %}"></a> {% endcomment %}
-  </li>
-  {% endfor %}
-</ol>
-{% else %}
-<p>There are no orders!</p>
-{% endif %} {% endblock %}
+{% endblock %}

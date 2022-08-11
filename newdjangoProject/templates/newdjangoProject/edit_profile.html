@@ -1,0 +1,30 @@
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
+
+    <p class="form_container">
+        <form action="{% url "edit_profile" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2>{{ msg }}</h2>
+                <label for="formFile" class="form-label" style="display: block;">
+                    <h4 style="margin-bottom: 2rem;">Edit Profile</h4>
+                </label>
+
+                <img src={{ image_url }} style="width: 200px; height: 200px; object-fit: contain;" />
+
+                <label for="levels" class="form-label" style="display: block;">
+                    <h4> Avatar </h4>
+                    {{  form.avatar }}
+                </label>
+
+
+                <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
+
+        </form>
+    </div>
+
+
+
+     <p><a href="{% url 'about' %}">About page</a></p>
+
+     <p><a href="{% url 'courses' %}">All Courses</a></p>
+{% endblock %}
