@@ -22,7 +22,7 @@ class CourseAdmin(admin.ModelAdmin):
     def apply_discount(self, request, queryset):
         queryset.update(price=F('price') * decimal.Decimal('0.9'))
 
-    apply_discount.short_description = 'Apply 10% discount'
+    apply_discount.short_description = 'Apply 10%% discount'
 
 class StudentAdmin(admin.ModelAdmin):
     model = Student

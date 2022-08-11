@@ -69,7 +69,11 @@ class Student(User):
         return list(self.interested_in.values_list("name", flat=True))
 
     def avatar_url(self):
-        return self.avatar.url
+        if self.avatar:
+            return self.avatar.url
+        else:
+            return None
+
 
 class Order(models.Model):
     ORDER_STATUS_CHOICES = [

@@ -40,7 +40,7 @@ class ResetPasswordForm(forms.Form):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Student
-        fields = ("username", "first_name", "last_name", "password1", "password2")
+        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
 
     def save(self, commit=True):
         user = super(RegisterForm, self).save(commit=False)

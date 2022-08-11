@@ -3,7 +3,7 @@
 from datetime import datetime
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user
+from django.contrib.auth import authenticate, login, get_user, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
@@ -57,23 +57,25 @@ def user_login(request):
 
 
 def register(request):
+    msg = ''
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            request.session['last_login'] = str(datetime.now())
             messages.success(request, "Registration successful.")
             return HttpResponseRedirect(reverse('index'))
         else:
-            return HttpResponse('Registration Unsuccessful. Invalid Information')
+            msg = form.errors
     form = RegisterForm()
-    return render(request, 'newdjangoProject/register.html', context={'form': form})
+    return render(request, 'newdjangoProject/register.html', context={'form': form, 'msg': msg})
 
 
 @login_required
 def user_logout(request):
-    # logout(request)  # COMMENTING FOR PART 2C
     del request.session['last_login']
+    logout(request)  # COMMENTING FOR PART 2C
     response = HttpResponseRedirect(reverse('index'))
     return response
 
@@ -234,7 +236,7 @@ def myorders(request):
 def edit_profile(request):
     user = get_user(request)
     if hasattr(user, 'student'):
-        msg = None
+        msg = ''
         if request.method == 'POST':
             form = StudentForm(request.POST, request.FILES)
             if form.is_valid():
