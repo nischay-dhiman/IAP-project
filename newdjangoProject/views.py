@@ -3,14 +3,14 @@
 from datetime import datetime
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user
+from django.contrib.auth import authenticate, login, get_user, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, reverse
 
-from .forms import InterestForm, OrderForm, LoginForm, RegisterForm
-from .models import Topic, Course, Interest, Order
+from newdjangoProject.forms import InterestForm, OrderForm, LoginForm, RegisterForm
+from newdjangoProject.models import Topic, Course, Interest, Order
 
 
 def do_stuff(user, request, **kwargs):
@@ -18,6 +18,7 @@ def do_stuff(user, request, **kwargs):
 
 
 # user_logged_out.connect(do_stuff)
+
 
 def index(request):
     user = request.user
@@ -48,7 +49,7 @@ def user_login(request):
         else:
             return HttpResponse('Invalid login details.')
     else:
-        context = {'form': LoginForm()}
+        context = {'form': LoginForm(), 'next': request.GET.get("next")}
         return render(request, 'newdjangoProject/login.html', context)
 
 
@@ -68,8 +69,8 @@ def register(request):
 
 @login_required
 def user_logout(request):
-    # logout(request)  # COMMENTING FOR PART 2C
-    del request.session['last_login']
+    logout(request)  # COMMENTING FOR PART 2C
+    # del request.session['last_login']
     response = HttpResponseRedirect(reverse('newdjangoProject:index'))
     # response.delete_cookie('last_login')
     return response
