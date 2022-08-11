@@ -21,7 +21,7 @@
                 </label>
 
                 <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
-                
+
                 {% if next %}
                     <input type="hidden" name="next" value={{ next }} />
                 {% endif %}
@@ -31,8 +31,9 @@
     </div>
 
 
+    <p><a href="{% url 'forgot_password' %}">forgot_password</a></p>
 
-     <p><a href="{% url 'about' %}">About page</a></p>
+    <p><a href="{% url 'about' %}">About page</a></p>
 
      <p><a href="{% url 'courses' %}">All Courses</a></p>
 {% endblock %}

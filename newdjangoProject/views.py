@@ -9,9 +9,13 @@ from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, reverse
 
-from .forms import InterestForm, OrderForm, LoginForm, RegisterForm
+from .forms import InterestForm, OrderForm, LoginForm, RegisterForm, ResetPasswordForm, StudentForm
 from .models import Topic, Course, Interest, Order
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
 
+import random
+import string
 
 def do_stuff(user, request, **kwargs):
     request.delete_cookie('last_login')
@@ -70,9 +74,38 @@ def register(request):
 def user_logout(request):
     # logout(request)  # COMMENTING FOR PART 2C
     del request.session['last_login']
-    response = HttpResponseRedirect(reverse('newdjangoProject:index'))
-    # response.delete_cookie('last_login')
+    response = HttpResponseRedirect(reverse('index'))
     return response
+
+def forgot_password(request):
+    # fetch email and check if user exists and send email for new password
+    context = {'form': ResetPasswordForm()}
+    return render(request, 'newdjangoProject/forgot_password.html', context)
+
+def send_new_password(request):
+    username = request.POST['username']
+    user = User.objects.filter(username=username)
+
+    if user:
+        user = user[0]
+        source = string.ascii_letters + string.digits
+        random_password = ''.join((random.choice(source) for i in range(15)))
+
+        user.set_password(random_password)
+
+        user.save()
+
+        send_mail(
+            'New password for My app',
+            'Hello User,\n Your new password: ' + random_password,
+            'noreply@vhaze.in',
+            [user.email],
+            fail_silently=False,
+        )
+
+    context = {'form': LoginForm(), 'msg': "New password sent successfully"}
+    return render(request, 'newdjangoProject/login.html', context)
+
 
 
 @login_required(login_url='/myapp/login/')
@@ -113,6 +146,22 @@ def detail(request, top_no):
 def placeorder(request):
     msg = ''
     courlist = Course.objects.all()
+
+    def new_order_form(msg = None):
+        current_user = get_user(request)
+        if current_user.id:
+            form = OrderForm(request.POST or None, initial={'student': current_user.student, })
+            logged_in = True
+        else:
+            form = OrderForm()
+            logged_in = False
+
+        return render(
+            request,
+            'newdjangoProject/placeorder.html',
+            {'form': form, 'msg': msg, 'courlist': courlist, 'logged_in': logged_in}
+        )
+
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -124,12 +173,13 @@ def placeorder(request):
                     course.price = course.discount()
                     course.save()
                 msg = 'Your course has been ordered successfully.'
+                return render(request, 'newdjangoProject/order_response.html', {'msg': msg})
             else:
                 msg = 'You exceeded the number of levels for this course.'
-            return render(request, 'newdjangoProject/order_response.html', {'msg': msg})
-    else:
-        form = OrderForm()
-        return render(request, 'newdjangoProject/placeorder.html', {'form': form, 'msg': msg, 'courlist': courlist})
+        else:
+            msg = form.errors
+
+    return new_order_form(msg)
 
 
 def courses(request):
@@ -176,6 +226,28 @@ def myorders(request):
             'orders': order_list
         }
         return render(request, 'newdjangoProject/myorders.html', context)
+    else:
+        msg = "You are not a registered student!"
+        return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
+
+@login_required
+def edit_profile(request):
+    user = get_user(request)
+    if hasattr(user, 'student'):
+        msg = None
+        if request.method == 'POST':
+            form = StudentForm(request.POST, request.FILES)
+            if form.is_valid():
+                student = user.student
+                student.avatar = form.cleaned_data['avatar']
+                student.save()
+                msg = "Your Profile Updated successfully"
+            else:
+                msg = form.errors
+
+        context = {'msg': msg, 'form': StudentForm(), 'user': user, 'image_url': user.student.avatar_url}
+        return render(request, 'newdjangoProject/edit_profile.html', context)
+
     else:
         msg = "You are not a registered student!"
         return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})

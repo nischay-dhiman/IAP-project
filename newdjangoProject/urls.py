@@ -31,5 +31,8 @@ urlpatterns = [
     path(r'logout/', views.user_logout, name='user_logout'),
     path(r'myaccount/', views.myaccount, name='myaccount'),
     path(r'register/', views.register, name='register'),
-    path(r'myorders/', views.myorders, name='myorders')
+    path(r'myorders/', views.myorders, name='myorders'),
+    path(r'forgot_password/', views.forgot_password, name='forgot_password'),
+    path(r'send_new_password/', views.send_new_password, name='send_new_password'),
+    path(r'edit_profile/', views.edit_profile, name='edit_profile')
 ]

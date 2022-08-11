@@ -5,7 +5,7 @@
         <form action="{% url "placeorder" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h2>{{ msg }}</h2>
-            <div class="mb-3">
+            <p class="mb-3">
                 <label for="formFile" class="form-label" style="display: block;">
                     <h4 style="margin-bottom: 2rem;">Order Form</h4>
                 </label>
@@ -15,11 +15,14 @@
                     {{  form.course }}
                 </label>
 
-                <label for="student" class="form-label" style="display: block;">
-                    <h4> Student </h4>
-                    {{  form.student }}
-                </label>
-
+                {% if not logged_in %}
+                    <label for="student" class="form-label" style="display: block;">
+                        <h4> Student </h4>
+                        {{  form.student }}
+                    </label>
+                {% else %}
+                    {{  form.student.as_hidden }}
+                {% endif %}
 
                 <label for="levels" class="form-label" style="display: block;">
                     <h4> Levels </h4>

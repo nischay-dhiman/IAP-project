@@ -22,13 +22,21 @@ class CourseAdmin(admin.ModelAdmin):
     def apply_discount(self, request, queryset):
         queryset.update(price=F('price') * decimal.Decimal('0.9'))
 
-    apply_discount.short_description = 'Apply 10%% discount'
+    apply_discount.short_description = 'Apply 10% discount'
+
+class StudentAdmin(admin.ModelAdmin):
+    model = Student
+    list_display = ("first_name", "last_name", "registered_courses")
+
 
 
 # Register your models here.
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Course, CourseAdmin)
+admin.site.register(Student, StudentAdmin)
+
+
 # admin.site.register(Topic)
 # admin.site.register(Course)
-admin.site.register(Student)
+# admin.site.register(Student)
 admin.site.register(Order)

@@ -22,10 +22,19 @@ class OrderForm(ModelForm):
             'order_date': SelectDateWidget()
         }
 
+class StudentForm(ModelForm):
+    class Meta:
+        model = Student
+        fields = ('avatar',)
+
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
     password = forms.CharField(widget=forms.PasswordInput())
+
+class ResetPasswordForm(forms.Form):
+    username = forms.CharField(label='Username')
 
 
 class RegisterForm(UserCreationForm):

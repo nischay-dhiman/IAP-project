@@ -41,6 +41,8 @@ class Course(models.Model):
             round(self.price-(self.price * decimal.Decimal(DISCOUNT_PERCENT/100)), 2))
         return discount
 
+def directory_path(instance, filename):
+  return 'static/student_images/student_{0}/{1}'.format(instance.id, filename)
 
 class Student(User):
     CITY_CHOICES = [
@@ -52,6 +54,7 @@ class Student(User):
     school = models.CharField(max_length=50, null=True, blank=True)
     city = models.CharField(max_length=2, choices=CITY_CHOICES, default='WS')
     interested_in = models.ManyToManyField(Topic)
+    avatar = models.ImageField(upload_to=directory_path)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -59,9 +62,14 @@ class Student(User):
     def bought_courses(self):
         return list(Order.objects.filter(student_id=self.id).values_list("course__name", flat=True))
 
+    def registered_courses(self):
+        return list(Order.objects.filter(student_id=self.id).values("course__name", "levels"))
+
     def interested_in_topics(self):
         return list(self.interested_in.values_list("name", flat=True))
 
+    def avatar_url(self):
+        return self.avatar.url
 
 class Order(models.Model):
     ORDER_STATUS_CHOICES = [
