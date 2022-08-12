@@ -13,7 +13,10 @@
     {% if course_list %} {% for course in course_list %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{course.name}}</td>
+      <td>
+          <a href="{% url 'coursedetail' course.id %}"> {{course.name}}</a>
+
+      </td>
       <td>
         {% if course.description %} {{course.description}} {% else %} Not
         Available {% endif %}

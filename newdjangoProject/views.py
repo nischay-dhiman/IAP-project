@@ -104,7 +104,7 @@ def send_new_password(request):
         send_mail(
             'New password for My app',
             'Hello User,\n Your new password: ' + random_password,
-            'noreply@vhaze.in',
+            'codefreak185@gmail.com',
             [user.email],
             fail_silently=False,
         )

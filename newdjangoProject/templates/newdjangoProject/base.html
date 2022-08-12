@@ -150,8 +150,14 @@
           </li>
           <li class="hbar1">
             <a href="{% url 'index' %}">Click here to return to main page</a
-            ><br />
+            >
           </li>
+          {% if request.session.last_login %}
+            <li>
+                Last Logged In at : {{ request.session.last_login }}
+            </li>
+          {% endif %}
+            <br />
         </ul>
       </div>
       <!-- Copyright -->
