@@ -17,7 +17,7 @@
     />
     <title>E-Learning WebApp - {% block title %}Welcome!{% endblock %}</title>
   </head>
-  <body>
+  <body style="height: 100vh">
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" style="background-color: #3e4c66 !important">
       <a class="navbar-brand"  target="" href="{% url 'index' %}" style="margin-left: 30px;">
@@ -48,8 +48,8 @@
                    data-busy="href">My Orders <span class="sr-only"></span></a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{% url 'edit_profile' %}" id="logout"
-                   data-busy="href">Edit Profile <span class="sr-only"></span></a>
+                <a class="nav-link" href="{% url 'myaccount' %}" id="logout"
+                   data-busy="href">My Account <span class="sr-only"></span></a>
               </li>
 
               <li class="nav-item active">
@@ -75,7 +75,7 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="min-height: 100%; margin-bottom: -50px">
       <!-- The closing div is in foot.ejs -->
       <div class="col-md-12 feedback" id="feedback">
         <h3>Working...&nbsp;&nbsp;&nbsp;<span></span></h3>
@@ -95,7 +95,7 @@
       <div class="bodyContainer">{% block body_block %}*** {% endblock %}</div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+    <footer class="bg-light text-center text-lg-start" style="height: 50px">
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         <ul>

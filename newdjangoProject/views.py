@@ -100,6 +100,7 @@ def send_new_password(request):
 
         user.save()
 
+        print("New password = ", random_password)
         send_mail(
             'New password for My app',
             'Hello User,\n Your new password: ' + random_password,
@@ -116,12 +117,27 @@ def send_new_password(request):
 def myaccount(request):
     user = get_user(request)
     if hasattr(user, 'student'):
+        msg = ''
         student = user.student
+        if request.method == 'POST':
+            form = StudentForm(request.POST, request.FILES)
+            if form.is_valid():
+                student.avatar = form.cleaned_data['avatar']
+                student.save()
+                msg = "Your Profile Updated successfully"
+            else:
+                msg = form.errors
+
+
         context = {
+            'msg': msg,
+            'form': StudentForm(),
             'interested_in_topics': student.interested_in_topics,
             'bought_courses': student.bought_courses,
             'first_name': student.first_name,
-            'last_name': student.last_name
+            'last_name': student.last_name,
+            'user': user,
+            'image_url': user.student.avatar_url
         }
         return render(request, 'newdjangoProject/myaccount.html', context)
     else:
@@ -235,26 +251,3 @@ def myorders(request):
         msg = "You are not a registered student!"
         return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
 
-
-@login_required
-def edit_profile(request):
-    user = get_user(request)
-    if hasattr(user, 'student'):
-        msg = ''
-        if request.method == 'POST':
-            form = StudentForm(request.POST, request.FILES)
-            if form.is_valid():
-                student = user.student
-                student.avatar = form.cleaned_data['avatar']
-                student.save()
-                msg = "Your Profile Updated successfully"
-            else:
-                msg = form.errors
-
-        context = {'msg': msg, 'form': StudentForm(), 'user': user,
-                   'image_url': user.student.avatar_url}
-        return render(request, 'newdjangoProject/edit_profile.html', context)
-
-    else:
-        msg = "You are not a registered student!"
-        return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
