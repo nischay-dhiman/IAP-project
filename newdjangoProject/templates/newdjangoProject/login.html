@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-{% load static %}
-<html>
-<head>
-    <link
-            rel="stylesheet"
-            href="{% static 'newdjangoProject/css/bootstrap.min.css' %}"
-    />
-</head>
+{% extends 'newdjangoProject/base.html' %}
+{% block body_block %}
 
-<body>
 <section class="h-100">
     <div class="container h-100">
         <div class="row justify-content-sm-center h-500">
@@ -59,5 +51,4 @@
         </div>
     </div>
 </section>
-</body>
-</html>
+{% endblock %}
