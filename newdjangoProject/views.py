@@ -9,8 +9,8 @@ from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, reverse
 
-from .forms import InterestForm, OrderForm, LoginForm, RegisterForm, ResetPasswordForm, StudentForm
-from .models import Topic, Course, Interest, Order
+from newdjangoProject.forms import InterestForm, OrderForm, LoginForm, RegisterForm, ResetPasswordForm, StudentForm
+from newdjangoProject.models import Topic, Course, Interest, Order
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 
@@ -53,7 +53,7 @@ def user_login(request):
         else:
             return HttpResponse('Invalid login details.')
     else:
-        context = {'form': LoginForm()}
+        context = {'form': LoginForm(), 'next': request.GET.get("next")}
         return render(request, 'newdjangoProject/login.html', context)
 
 
@@ -154,7 +154,8 @@ def placeorder(request):
     def new_order_form(msg=None):
         current_user = get_user(request)
         if current_user.id:
-            form = OrderForm(request.POST or None, initial={'student': current_user.student, })
+            form = OrderForm(request.POST or None, initial={
+                             'student': current_user.student, })
             logged_in = True
         else:
             form = OrderForm()
@@ -250,7 +251,8 @@ def edit_profile(request):
             else:
                 msg = form.errors
 
-        context = {'msg': msg, 'form': StudentForm(), 'user': user, 'image_url': user.student.avatar_url}
+        context = {'msg': msg, 'form': StudentForm(), 'user': user,
+                   'image_url': user.student.avatar_url}
         return render(request, 'newdjangoProject/edit_profile.html', context)
 
     else:
