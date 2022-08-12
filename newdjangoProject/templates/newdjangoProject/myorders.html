@@ -1,32 +1,30 @@
-{% extends 'newdjangoProject/base.html' %}
-{% block body_block %}
-    <a href="{% url 'placeorder' %}">New Order</a>
-    <h2>My Orders</h2>
-        {% if orders %}
-            <table>
-                <thead>
-                    <th>
-                        Order Course
-                    </th>
-                    <th>
-                        Levels
-                    </th>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                        <tr>
-                            <td>
-                                {{ order.course.name}}
-                            </td>
-                            <td>
-                                {{ order.levels}}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>There are no orders!</p>
-        {% endif %}
+{% extends 'newdjangoProject/base.html' %} {% block body_block %}
+<h2 class="header">
+  My Orders
 
-{% endblock %}
+  <button type="button" class="btn btn-link">
+    <a href="{% url 'placeorder' %}">Place a new order</a>
+  </button>
+</h2>
+{% if orders %}
+<table class="table table-hover">
+  <thead>
+    <th>#</th>
+    <th>Order Course</th>
+    <th>Levels</th>
+    <th>Ordered on</th>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{ order.course.name}}</td>
+      <td>{{ order.levels}}</td>
+      <td>{{ order.order_date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>There are no orders!</p>
+{% endif %} {% endblock %}

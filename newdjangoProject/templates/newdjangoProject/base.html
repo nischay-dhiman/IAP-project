@@ -17,61 +17,101 @@
     />
     <title>E-Learning WebApp - {% block title %}Welcome!{% endblock %}</title>
   </head>
-  <body>
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" style="background-color: #3e4c66 !important">
-      <a class="navbar-brand"  target="" href="{% url 'index' %}" style="margin-left: 30px;">
-        <img src="{% static 'newdjangoProject/images/test3.png' %}" alt="Listd" style="height: 65px;"/>
+  <body class="d-flex flex-column min-vh-100">
+    <nav
+      class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+      style="background-color: #3e4c66 !important"
+    >
+      <a
+        class="navbar-brand"
+        target=""
+        href="{% url 'index' %}"
+        style="margin-left: 30px"
+      >
+        <img
+          src="{% static 'newdjangoProject/images/test3.png' %}"
+          alt="Listd"
+          style="height: 65px"
+        />
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'index' %}">Topics <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'index' %}"
+              >Topics <span class="sr-only">(current)</span></a
+            >
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'courses' %}">Courses <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'courses' %}"
+              >Courses <span class="sr-only">(current)</span></a
+            >
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'about' %}"
+              >About <span class="sr-only">(current)</span></a
+            >
           </li>
-
         </ul>
+        <h2 class="navbar-text" style="color: white">
+          {% block myhdg %}Hello User {% endblock %}
+        </h2>
         <ul class="navbar-nav ml-auto">
           {% if request.session.last_login %}
 
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'myorders' %}" id="logout"
-                   data-busy="href">My Orders <span class="sr-only"></span></a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'edit_profile' %}" id="logout"
-                   data-busy="href">Edit Profile <span class="sr-only"></span></a>
-              </li>
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="{% url 'myorders' %}"
+              id="logout"
+              data-busy="href"
+              >My Orders <span class="sr-only"></span
+            ></a>
+          </li>
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="{% url 'edit_profile' %}"
+              id="logout"
+              data-busy="href"
+              >Edit Profile <span class="sr-only"></span
+            ></a>
+          </li>
 
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'user_logout' %}" id="logout"
-                   data-busy="href">Logout <span class="sr-only"></span></a>
-              </li>
+          <li class="nav-item active">
+            <a
+              class="nav-link"
+              href="{% url 'user_logout' %}"
+              id="logout"
+              data-busy="href"
+              >Logout <span class="sr-only"></span
+            ></a>
+          </li>
 
-          {% else  %}
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'user_login' %}">Login <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'register' %}">Register <span class="sr-only">(current)</span></a>
-              </li>
-          {% endif  %}
-
+          {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'user_login' %}"
+              >Login <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'register' %}"
+              >Register <span class="sr-only">(current)</span></a
+            >
+          </li>
+          {% endif %}
         </ul>
-
-      <span class="navbar-text">
-        {% block myhdg %}Hello User {% endblock %}
-      </span>
-
       </div>
     </nav>
 
@@ -95,18 +135,21 @@
       <div class="bodyContainer">{% block body_block %}*** {% endblock %}</div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+    <footer class="bg-light text-center text-lg-start mt-auto">
       <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      <div
+        class="text-center p-3"
+        style="background-color: #f7f7f7; border-top: 1px solid #ececec"
+      >
         <ul>
-            <li class="hbar1">
-              <a href="/myapp/about/">Find out about our ELearning site</a>
-            </li>
-            <li class="hbar1">
-              <a href="{% url 'index' %}">Click here to return to main page</a
-              ><br />
-            </li>
-          </ul>
+          <li class="hbar1">
+            <a href="/myapp/about/">Find out about our ELearning site</a>
+          </li>
+          <li class="hbar1">
+            <a href="{% url 'index' %}">Click here to return to main page</a
+            ><br />
+          </li>
+        </ul>
       </div>
       <!-- Copyright -->
     </footer>

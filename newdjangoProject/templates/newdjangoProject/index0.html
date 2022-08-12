@@ -1,19 +1,38 @@
-{% extends 'newdjangoProject/base.html' %}
-{% block myhdg %}
-    Hello {{first_name}}
-{% endblock%}
-{% block body_block %}
-   {% if top_list %}
-       <h2>List of Topics</h2>
-       <ol>
-            {% for top in top_list %}
-                <li>
-                    <a href="{% url 'detail' top.id %}">{{ top.name}}</a>
-                </li>
-            {% endfor %}
-       </ol>
-   {% else %}
-       <strong>There are no available topics!</strong>
-   {% endif %}
+{% extends 'newdjangoProject/base.html' %} {% block myhdg %} Hello
+{{first_name}} {% endblock%} {% block body_block %} {% if top_list %}
+<h2 style="margin: 20px 0">List of Topics</h2>
 
-{% endblock %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col" />
+    </tr>
+  </thead>
+  <tbody>
+    {% for top in top_list %}
+    <tr>
+      <td scope="row">{{ forloop.counter }}</td>
+      <td>{{top.name}}</td>
+      <td>{{top.category}}</td>
+      <td>
+        <a href="{% url 'detail' top.id %}">View Courses</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% comment %}
+<ol>
+  {% for top in top_list %}
+  <li>
+    <a href="{% url 'detail' top.id %}">{{ top.name}}</a>
+  </li>
+  {% endfor %}
+</ol>
+{% endcomment %} {% else %}
+<strong>There are no available topics!</strong>
+{% endif %} {% endblock %}

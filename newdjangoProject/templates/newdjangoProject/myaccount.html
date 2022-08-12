@@ -1,22 +1,55 @@
-{% extends 'newdjangoProject/base.html' %}
-{% block body_block %}
-    <a href="{% url 'courses' %}">Back to all courses</a>
-    <p><b>Course Details:</b></p>
+{% extends 'newdjangoProject/base.html' %} {% block body_block %} {% comment %}
+<a href="{% url 'courses' %}">Back to all courses</a> {% endcomment %}
+<h2 class="header">My Account</h2>
 
-    <ul>
-        <li>
-            <b>Name: </b>{{ first_name }} {{ last_name }}
-        </li>
-        <li>
-            <b>Courses: </b>{{ bought_courses }}
-        </li>
-        <li>
-            <b>Topic: </b>{{ interested_in_topics }}
-        </li>
+<ul class="myAccountList">
+  <li><b>Name: </b>{{ first_name }} {{ last_name }}</li>
+  <li><b>Email: </b>{{ email }}</li>
+  <li>
+    <b>Registered Courses </b>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Course Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if bought_courses %} {% for course in bought_courses %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{course}}</td>
+        </tr>
+        {% endfor %} {% else %}
+        <td colspan="2">No courses bought!</td>
+        {% endif %}
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <b>Interested Topics </b>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if interested_in_topics %} {% for topic in interested_in_topics %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{topic}}</td>
+        </tr>
+        {% endfor %} {% else %}
+        <td colspan="2">No topics found!</td>
+        {% endif %}
+      </tbody>
+    </table>
+  </li>
+</ul>
 
-    </ul>
+<p><a href="{% url 'about' %}">About page</a></p>
 
-     <p><a href="{% url 'about' %}">About page</a></p>
-
-     <p><a href="{% url 'courses' %}">All Courses</a></p>
+<p><a href="{% url 'courses' %}">All Courses</a></p>
 {% endblock %}

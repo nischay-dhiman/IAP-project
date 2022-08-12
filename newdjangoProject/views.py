@@ -65,7 +65,7 @@ def register(request):
             user = form.save()
             login(request, user)
             request.session['last_login'] = str(datetime.now())
-            messages.success(request, 'Registration Successful!');
+            messages.success(request, 'Registration Successful!')
             return HttpResponseRedirect(reverse('index'))
         else:
             msg = form.errors
@@ -121,7 +121,8 @@ def myaccount(request):
             'interested_in_topics': student.interested_in_topics,
             'bought_courses': student.bought_courses,
             'first_name': student.first_name,
-            'last_name': student.last_name
+            'last_name': student.last_name,
+            'email': student.email
         }
         return render(request, 'newdjangoProject/myaccount.html', context)
     else:

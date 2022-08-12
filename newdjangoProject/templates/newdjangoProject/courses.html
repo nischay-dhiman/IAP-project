@@ -1,6 +1,11 @@
 {% extends 'newdjangoProject/base.html' %} {% block body_block %}
-<a href="{% url 'placeorder' %}">New Order</a>
-
+<h2 class="header">
+  List of Courses
+  <button type="button" class="btn btn-link">
+    <a href="{% url 'placeorder' %}">Place new order</a>
+  </button>
+</h2>
+{% include 'newdjangoProject/course-list.html' %} {% comment %}
 <p><b>Courses:</b></p>
 
 {% if course_list %}
@@ -12,5 +17,5 @@
   {% endfor %}
 </ol>
 {% else %}
-<strong>There are no available courses!</strong>
-{% endif %} {% endblock %}
+<strong>There are no available courses!</strong> {% endcomment %} {% comment %}
+{% endif %} {% endcomment %} {%endblock %}

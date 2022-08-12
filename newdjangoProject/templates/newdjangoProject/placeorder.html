@@ -1,7 +1,7 @@
 {% extends 'newdjangoProject/base.html' %}
 {% block body_block %}
 
-    <div class="form_container">
+    <div class="form_container orderForm">
         <form action="{% url "placeorder" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h2>{{ msg }}</h2>
@@ -11,13 +11,13 @@
                 </label>
 
                 <label for="course" class="form-label" style="display: block;">
-                    <h4> Course </h4>
+                    <h5> Course </h5>
                     {{  form.course }}
                 </label>
 
                 {% if not logged_in %}
                     <label for="student" class="form-label" style="display: block;">
-                        <h4> Student </h4>
+                        <h5> Student </h5>
                         {{  form.student }}
                     </label>
                 {% else %}
@@ -25,24 +25,28 @@
                 {% endif %}
 
                 <label for="levels" class="form-label" style="display: block;">
-                    <h4> Levels </h4>
+                    <h5> Levels </h5>
                     {{  form.levels }}
                 </label>
 
                 <label for="order_date" class="form-label" style="display: block;">
-                    <h4> Order Date </h4>
+                    <h5> Order Date </h5>
                     {{  form.order_date }}
                 </label>
 
-                <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
+                
+                <input type="submit" value="Submit" class="btn btn-primary convert_button" />
+                <button type="button" class="btn btn-secondary" onClick="javascript:history.go(-1);" style="margin-left: 10px" >
+                    Cancel
+                </button>
 
             </div>
         </form>
     </div>
 
-
+{% comment %} 
 
      <p><a href="{% url 'about' %}">About page</a></p>
 
-     <p><a href="{% url 'courses' %}">All Courses</a></p>
+     <p><a href="{% url 'courses' %}">All Courses</a></p> {% endcomment %}
 {% endblock %}

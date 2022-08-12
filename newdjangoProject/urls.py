@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from django.shortcuts import redirect
 from newdjangoProject import views
 
 # app_name = 'myapp'
@@ -30,6 +31,7 @@ urlpatterns = [
     path(r'login/', views.user_login, name='user_login'),
     path(r'logout/', views.user_logout, name='user_logout'),
     path(r'myaccount/', views.myaccount, name='myaccount'),
+    path(r'myaccount//', lambda req: redirect('/myapp/myaccount/')),
     path(r'register/', views.register, name='register'),
     path(r'myorders/', views.myorders, name='myorders'),
     path(r'forgot_password/', views.forgot_password, name='forgot_password'),

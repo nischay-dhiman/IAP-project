@@ -25,3 +25,26 @@ h1 {
 .bodyContainer {
     padding: 20px;
 }
+
+.header {
+    margin: 20px 0;
+    position: relative;
+}
+
+.header .btn {
+    position: absolute;
+    right: 0;
+    top: -17px;
+}
+
+.orderForm .form-label {
+    margin-bottom: 20px;
+}
+
+.myAccountList li {
+    margin-bottom: 20px;
+}
+
+.myAccountList li .table{
+    margin-top: 10px;
+}
