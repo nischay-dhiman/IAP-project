@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 import random
 import string
 
+
 def do_stuff(user, request, **kwargs):
     request.delete_cookie('last_login')
 
@@ -34,8 +35,8 @@ def index(request):
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
@@ -44,7 +45,7 @@ def user_login(request):
                 response = HttpResponseRedirect(reverse('index'))
                 if nextUrl:
                     response = HttpResponseRedirect(nextUrl)
-                # response.set_cookie('last_login', datetime.now() , max_age=3600)
+                response.set_cookie('last_login', datetime.now(), max_age=3600)
                 login(request, user)
                 return response
             else:
@@ -64,7 +65,7 @@ def register(request):
             user = form.save()
             login(request, user)
             request.session['last_login'] = str(datetime.now())
-            messages.success(request, "Registration successful.")
+            messages.success(request, 'Registration Successful!');
             return HttpResponseRedirect(reverse('index'))
         else:
             msg = form.errors
@@ -79,10 +80,12 @@ def user_logout(request):
     response = HttpResponseRedirect(reverse('index'))
     return response
 
+
 def forgot_password(request):
     # fetch email and check if user exists and send email for new password
     context = {'form': ResetPasswordForm()}
     return render(request, 'newdjangoProject/forgot_password.html', context)
+
 
 def send_new_password(request):
     username = request.POST['username']
@@ -107,7 +110,6 @@ def send_new_password(request):
 
     context = {'form': LoginForm(), 'msg': "New password sent successfully"}
     return render(request, 'newdjangoProject/login.html', context)
-
 
 
 @login_required(login_url='/myapp/login/')
@@ -149,7 +151,7 @@ def placeorder(request):
     msg = ''
     courlist = Course.objects.all()
 
-    def new_order_form(msg = None):
+    def new_order_form(msg=None):
         current_user = get_user(request)
         if current_user.id:
             form = OrderForm(request.POST or None, initial={'student': current_user.student, })
@@ -231,6 +233,7 @@ def myorders(request):
     else:
         msg = "You are not a registered student!"
         return render(request, 'newdjangoProject/not_student_account.html', {'msg': msg})
+
 
 @login_required
 def edit_profile(request):

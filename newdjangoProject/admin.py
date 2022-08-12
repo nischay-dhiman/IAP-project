@@ -13,10 +13,14 @@ class CourseInline(admin.TabularInline):
 
 
 class TopicAdmin(admin.ModelAdmin):
+    model = Topic
+    list_display = ['name', 'category']
     inlines = [CourseInline]
 
 
 class CourseAdmin(admin.ModelAdmin):
+    model = Course
+    list_display = ['topic', 'name', 'price', 'for_everyone']
     actions = ['apply_discount']
 
     def apply_discount(self, request, queryset):
@@ -24,17 +28,16 @@ class CourseAdmin(admin.ModelAdmin):
 
     apply_discount.short_description = 'Apply 10%% discount'
 
+
 class StudentAdmin(admin.ModelAdmin):
     model = Student
     list_display = ("first_name", "last_name", "registered_courses")
-
 
 
 # Register your models here.
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Student, StudentAdmin)
-
 
 # admin.site.register(Topic)
 # admin.site.register(Course)
