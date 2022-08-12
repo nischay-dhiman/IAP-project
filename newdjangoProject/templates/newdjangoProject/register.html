@@ -2,13 +2,14 @@
 {% block body_block %}
 
 <section class="h-100">
-    <div class="container h-100">
+    <div class="container h-100" style="margin-bottom: 100px">
         <div class="row justify-content-sm-center h-500">
             <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
                 <div class="text-center my-5"></div>
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
                         <h2 class="fs-4 card-title fw-bold mb-4 text-center">Register</h2>
+                        <span>{{ msg }}</span>
                         <form action="{% url "register" %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <h2>{{ msg }}</h2>
