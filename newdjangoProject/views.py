@@ -35,8 +35,8 @@ def index(request):
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
@@ -45,7 +45,7 @@ def user_login(request):
                 response = HttpResponseRedirect(reverse('index'))
                 if nextUrl:
                     response = HttpResponseRedirect(nextUrl)
-                # response.set_cookie('last_login', datetime.now() , max_age=3600)
+                response.set_cookie('last_login', datetime.now(), max_age=3600)
                 login(request, user)
                 return response
             else:
@@ -65,7 +65,7 @@ def register(request):
             user = form.save()
             login(request, user)
             request.session['last_login'] = str(datetime.now())
-            messages.success(request, "Registration successful.")
+            messages.success(request, 'Registration Successful!');
             return HttpResponseRedirect(reverse('index'))
         else:
             msg = form.errors

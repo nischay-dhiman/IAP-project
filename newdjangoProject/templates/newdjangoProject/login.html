@@ -1,39 +1,54 @@
 {% extends 'newdjangoProject/base.html' %}
 {% block body_block %}
 
-    <div class="container-xl">
-        <form action="{% url "user_login" %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h2>{{ msg }}</h2>
-            <div class="mb-3">
-                <label for="formFile" class="form-label" style="display: block;">
-                    <h4 style="margin-bottom: 2rem;">Login Form</h4>
-                </label>
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-sm-center h-500">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                <div class="text-center my-5"></div>
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
+                        <form action="{% url "user_login" %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="username">
+                                    Username </label>
+                                {{ form.username }}
+                            </div>
 
-                <label for="course" class="form-label" style="display: block;">
-                    <h4> Username </h4>
-                    {{  form.username }}
-                </label>
+                            <div class="mb-3">
+                                <div class="mb-2 w-100">
+                                    <label class="text-muted" for="password">Password</label>
+                                </div>
+                                {{ form.password }}
+                                <a href="{% url 'forgot_password' %}" class="float-end">
+                                    Forgot Password?
+                                </a>
+                            </div>
 
-                <label for="student" class="form-label" style="display: block;">
-                    <h4> Password </h4>
-                    {{  form.password }}
-                </label>
-
-                <input type="submit" value="Submit" class="btn btn-lg btn-secondary convert_button" />
-
-                {% if next %}
-                    <input type="hidden" name="next" value={{ next }} />
-                {% endif %}
-                
+                            <div class="d-flex align-items-center">
+                                <button type="submit" class="btn btn-primary ms-auto">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer py-3 border-0">
+                        <div class="text-center">
+                            Don't have an account? <a href="{% url 'register' %}" class="text-blue">Register as a
+                            student</a>
+                        </div>
+                        <div class="text-center">
+                             <a href="{% url 'index' %}" class="text-blue-50">Home</a>
+                        </div>
+                    </div>
+                    {% if next %}
+                        <input type="hidden" name="next" value={{ next }}/>
+                    {% endif %}
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-
-
-    <p><a href="{% url 'forgot_password' %}">forgot_password</a></p>
-
-    <p><a href="{% url 'about' %}">About page</a></p>
-
-     <p><a href="{% url 'courses' %}">All Courses</a></p>
+</section>
 {% endblock %}

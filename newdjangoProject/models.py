@@ -15,7 +15,7 @@ class Topic(models.Model):
     category = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return 'Name=' + self.name + ' Category=' + self.category
+        return self.name
 
     def get_category(self):
         return self.category

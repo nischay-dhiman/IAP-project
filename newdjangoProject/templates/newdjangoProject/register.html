@@ -1,50 +1,73 @@
 {% extends 'newdjangoProject/base.html' %}
 {% block body_block %}
 
-    <div class="form_container">
-        <form action="{% url "register" %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h2>{{ msg }}</h2>
-            <div class="mb-3">
-                <label for="formFile" class="form-label" style="display: block;">
-                    <h4 style="margin-bottom: 2rem;">Register Form</h4>
-                </label>
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-sm-center h-500">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                <div class="text-center my-5"></div>
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
+                        <form action="{% url "register" %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h2>{{ msg }}</h2>
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="username">
+                                    Username </label>
+                                   {{ form.username }}
+                            </div>
 
-                <label for="username" class="form-label" style="display: block;">
-                    <h4> Username </h4>
-                    {{  form.username }}
-                </label>
+                              <div class="mb-3">
+                                <label class="mb-2 text-muted" for="firstname">
+                                    First Name </label>
+                                {{ form.first_name }}
+                            </div>
 
-                <label for="username" class="form-label" style="display: block;">
-                    <h4> Email </h4>
-                    {{  form.email }}
-                </label>
+                              <div class="mb-3">
+                                <label class="mb-2 text-muted" for="lastname">
+                                    Last Name </label>
+                                {{ form.last_name }}
+                            </div>
 
-                <label for="first_name" class="form-label" style="display: block;">
-                    <h4> First Name </h4>
-                    {{  form.first_name }}
-                </label>
+                              <div class="mb-3">
+                                <label class="mb-2 text-muted" for="email">
+                                    Email </label>
+                                {{ form.email }}
+                            </div>
 
-                <label for="lastname" class="form-label" style="display: block;">
-                    <h4> Last Name </h4>
-                    {{  form.last_name }}
-                </label>
+                              <div class="mb-3">
+                                <label class="mb-2 text-muted" for="password">
+                                    Password </label>
+                                {{ form.password1 }}
+                            </div>
 
-                <label for="password" class="form-label" style="display: block;">
-                    <h4> Password </h4>
-                    {{  form.password1 }}
-                </label>
+                            <div class="mb-3">
+                                <div class="mb-2 w-100">
+                                    <label class="text-muted" for="password">
+                                        Password Confirmation</label>
+                                </div>
+                                {{ form.password2 }}
+                            </div>
 
-                <label for="password confirm" class="form-label" style="display: block;">
-                    <h4> Password Confirmation </h4>
-                    {{  form.password2 }}
-                </label>
-
-                <br></br>
-                <input type="submit" value="Register" class="btn btn-lg btn-secondary convert_button" />
-
+                            <div class="d-flex align-items-center">
+                                <button type="submit" class="btn btn-primary ms-auto">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer py-3 border-0">
+                        <div class="text-center">
+                            Already have an account? <a href="{% url 'user_login' %}" class="text-blue">Login</a>
+                        </div>
+                        <div class="text-center">
+                             <a href="{% url 'index' %}" class="text-blue-50">Home</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
-    <p class="text-center">If you already have an account, <a href="{% url 'user_login' %}">login</a> instead.</p>
+        </div>
     </div>
+</section>
 {% endblock %}
